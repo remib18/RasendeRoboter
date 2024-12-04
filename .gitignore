@@ -1,0 +1,12 @@
+# IDEs
+.vscode/
+.idea/
+
+# Python
+__pycache__/
+.venv/
+
+# Platform specific
+.DS_Store
+Thumbs.db
+
