@@ -1,7 +1,7 @@
-
 from typing import List, Tuple, Optional
 from dataclasses import dataclass
 from enum import Enum
+from abc import ABC, abstractmethod
 
 
 @dataclass(frozen=True)
@@ -101,3 +101,20 @@ class Direction(Enum):
     RIGHT = 1
     DOWN = 2
     LEFT = 3
+
+
+class GameResolutionInterface(ABC):
+    """
+    Interface that define how to build resolvers for the game.
+    """
+
+    def __init__(self, state: GameState):
+        self.state = state
+
+    @abstractmethod
+    def resolve(self) -> Optional[List[Tuple[Color, Coordinate]]]:
+        """
+        Find the best solution to reach the target.
+        :return: A list of moves in the format to reach the target. None if no solution is found.
+        """
+        pass
