@@ -117,4 +117,3 @@ class GameResolutionInterface(ABC):
         Find the best solution to reach the target.
         :return: A list of moves in the format to reach the target. None if no solution is found.
         """
-        pass
