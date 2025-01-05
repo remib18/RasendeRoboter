@@ -86,7 +86,7 @@ class Board:
         self.target_shape = random.choice(target_list)
         self.target_color = random.choice(robot_colors)
 
-        self.target_shape = "Rain"
+        # self.target_shape = "Rain"
         
         # Set selected robot
         if self.robots:
@@ -129,8 +129,10 @@ class Board:
                     self.targets[map_input[i*2+1][j*2+1]] = (j, i)
         self.targets.pop("X")
         # Take away X from the targets
+
+        # print(self.walls)
         
-        print(self.targets)
+        # print(self.targets)
 
     def draw(self, screen, colors):
         # Draw grid
@@ -262,12 +264,12 @@ class Board:
             # Check if the robot reached its target
             if self.target_shape == "Rain":
                 if (x, y) == (self.targets["Rain"]):
-                    print("target reached")
+                    # print("target reached")
                     self.selected_robot.reached_target = True
                     break
             else:
                 if (x, y) == (self.targets[self.target_color[0]+self.target_shape[0]] or self.targets["Rain"]) and self.selected_robot.color == self.target_color:
-                    print("target reached")
+                    # print("target reached")
                     self.selected_robot.reached_target = True
                     break
 

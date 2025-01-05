@@ -1,3 +1,8 @@
+from re import match
+from typing import Tuple, Union, Optional
+
+from utils import GameState, Shape, Color, Coordinate
+
 
 class AIPlayer:
     def __init__(self, board):
