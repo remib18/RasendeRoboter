@@ -211,6 +211,9 @@ class AiAdapter:
         Translates self.board.target_shape into one of the Shape enum values.
         """
         shape_enum = SHAPE_MAP.get(self.board.target_shape)
+        if shape_enum == "Rain":
+            shape_enum = "Rain"
+        
         if shape_enum is None:
             raise ValueError(f"Unsupported chip shape: {self.board.target_shape}")
         return shape_enum

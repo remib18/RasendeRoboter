@@ -209,7 +209,7 @@ class Board:
         if self.ai_error:
             # Draw the label
             font = pygame.font.Font(None, 32) 
-            label_text = f"AI moving error"
+            label_text = f"AI moving error! Restart the game!"
             label_surface = font.render(label_text, True, colors["Black"])  # Render text in black
             label_position = ((self.grid_size + 1.8) * self.cell_size, 10 * self.cell_size)
             screen.blit(label_surface, label_position)

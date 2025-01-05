@@ -108,10 +108,8 @@ class Game:
             # Move the robot (break if move is invalid)
             if not self.board.move_robot(direction):
                 self.board.ai_error = True
-                # print("AI moving error")
+                self.display_end_screen()
                 break
-            # else:
-                # print("move", direction, self.board.selected_robot.color)
             time.sleep(1)
 
             # Update the display
@@ -138,11 +136,7 @@ class Game:
         # Check if the key is mapped to a direction
         if event.key in key_to_direction:
             direction = key_to_direction[event.key]
-            # if self.board.move_robot(direction):
-                # print(f"Robot {self.board.selected_robot.color} moved {direction}.")
-            # else:
-                # print(f"Robot {self.board.selected_robot.color} cannot move {direction}.")
-        # print(self.board.move_history)
+            self.board.move_robot(direction)
 
     def draw_buttons(self, screen, general_font):
         for button_name, button_rect in self.button_rects.items():
@@ -174,6 +168,20 @@ class Game:
         overlay = pygame.Surface(self.screen.get_size(), pygame.SRCALPHA)  # Create an alpha-enabled surface
         overlay.fill((128, 128, 128, 128))  # RGBA: Gray with 50% transparency
         self.screen.blit(overlay, (0, 0))  # Draw the overlay
+
+        # Determine the message to display
+        if self.board.selected_robot.reached_target:
+            end_message = "Well done!"
+        elif self.board.ai_error:
+            end_message = "No solution found!"
+        else:
+            end_message = "Game Over"
+
+        # Render the message
+        message_label = self.general_font.render(end_message, True, self.colors["Black"])
+        message_rect = message_label.get_rect(center=(self.screen.get_width() // 2, self.screen.get_height() // 2 - 50))
+        self.screen.blit(message_label, message_rect)
+
 
         # Button dimensions and positions
         BUTTON_WIDTH, BUTTON_HEIGHT = 150, 50
