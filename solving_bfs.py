@@ -69,7 +69,7 @@ def get_shape(shape_code: Shape):
     return shapes[shape_code.value]
 
 
-class AIPlayer(GameResolutionInterface):
+class BFS(GameResolutionInterface):
     def __init__(self, state: "GameState"):
         super().__init__(state)
         self.state = state

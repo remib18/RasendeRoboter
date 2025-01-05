@@ -1,7 +1,11 @@
 import pygame
-import time 
+import time
+
+from ai_adapter import AiAdapter
 from board import Board
 from ai_player import AIPlayer
+from utils import Algorithm
+
 
 class Game:
     def __init__(self, grid_size, cell_size, control_panel_width, robot_list, colors):
@@ -53,7 +57,7 @@ class Game:
         # Check if clicked on a button
         for button_name, button_rect in self.button_rects.items():
             if button_rect.collidepoint(pos):
-                print(f"{button_name} button clicked")
+                # print(f"{button_name} button clicked")
                 self.trigger_action(button_name)
                 return  # Exit early if a button was clicked
 
@@ -73,24 +77,22 @@ class Game:
             2. Get the AI move steps from the algorithm
             3. Pass the AI move steps into the auto-move function 
             '''
+            ai_adapter = AiAdapter(self.board, Algorithm.BFS)
+            ai_adapter.resolve()
+            self.board.ai_move = ai_adapter.get_converted_moves()
 
-            # Fake date for moving the robot
-            # Replace this line with the AI movement generation function
-            self.board.ai_move = [['Right', 'Red'], ['Down', 'Yellow'], ['Up', 'Green'], ['Left', 'Blue']]
-
-            
             # Call AI player for the auto play (use the move sequence for inputz)
             self.ai_play_turn(self.board.ai_move)
         
         elif button_name == "Restart":
-            print("Game Restarted")
+            # print("Game Restarted")
             self.board.reset_parameters()
             self.board.initialize_board(self.robot_list)
             self.start_time = time.time()
             self.draw(self.screen, self.general_font)
 
         elif button_name == "Quit":
-            print("Game Exited")
+            # print("Game Exited")
             self.running = False
 
         #print(self.board.move_history)
@@ -106,10 +108,10 @@ class Game:
             # Move the robot (break if move is invalid)
             if not self.board.move_robot(direction):
                 self.board.ai_error = True
-                print("AI moving error")
+                # print("AI moving error")
                 break
-            else: 
-                print("move", direction, self.board.selected_robot.color)
+            # else:
+                # print("move", direction, self.board.selected_robot.color)
             time.sleep(1)
 
             # Update the display
@@ -120,10 +122,10 @@ class Game:
 
     def change_selected_robot(self, robot):
         if self.board.selected_robot != robot:
-            print(f"Changing selected robot to: {robot.color}")
+            # print(f"Changing selected robot to: {robot.color}")
             self.board.selected_robot = robot
-        else:
-            print(f"Robot {robot.color} is already selected.")
+        # else:
+            # print(f"Robot {robot.color} is already selected.")
 
     def handle_keyboard_input(self, event):
         key_to_direction = {
@@ -136,11 +138,11 @@ class Game:
         # Check if the key is mapped to a direction
         if event.key in key_to_direction:
             direction = key_to_direction[event.key]
-            if self.board.move_robot(direction):
-                print(f"Robot {self.board.selected_robot.color} moved {direction}.")
-            else:
-                print(f"Robot {self.board.selected_robot.color} cannot move {direction}.")
-        print(self.board.move_history)
+            # if self.board.move_robot(direction):
+                # print(f"Robot {self.board.selected_robot.color} moved {direction}.")
+            # else:
+                # print(f"Robot {self.board.selected_robot.color} cannot move {direction}.")
+        # print(self.board.move_history)
 
     def draw_buttons(self, screen, general_font):
         for button_name, button_rect in self.button_rects.items():
@@ -205,9 +207,9 @@ class Game:
             elif event.type == pygame.MOUSEBUTTONDOWN:
                 for button_name, button_rect in self.end_screen_button_rects.items():
                     if button_rect.collidepoint(event.pos):
-                        print(f"{button_name} button clicked")
+                        # print(f"{button_name} button clicked")
                         if button_name == "Restart":
-                            print("Game Restarted")
+                            # print("Game Restarted")
                             # Clear the gray overlay and reset the game state
                             self.screen.fill(self.colors["White"])
                             self.board.reset_parameters()
@@ -234,7 +236,7 @@ class Game:
         
         while self.running:
             if self.board.selected_robot.reached_target and not self.game_over:
-                print("GAME: target reached")
+                # print("GAME: target reached")
                 self.board.target_reached_result(self.screen, self.colors)
                 self.display_end_screen()  # Call the new method for the overlay
                 self.game_over = True  # Mark the game as finished

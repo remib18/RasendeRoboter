@@ -66,8 +66,9 @@ def get_shape(shape_code: Shape):
     return shapes[shape_code.value]
 
 # AI player class that will use A* to find the solution
-class AIPlayer(GameResolutionInterface):
+class AStar(GameResolutionInterface):
     def __init__(self, state: "GameState"):
+        super().__init__(state)
         self.name = "AI"
         self.state = state  # Current game state
         self.visited_positions = [[coords] for coords in self.state.pawns]
