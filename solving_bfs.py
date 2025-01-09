@@ -133,9 +133,12 @@ class BFS(GameResolutionInterface):
 
         while queue:
             current_state = queue.popleft()
+            loc = current_state.pawns[target_pawn_color.value]
+            print(f"\nCurent location: ({loc.x}, {loc.y})")
 
             # Check if we've reached the target
             if self._is_solution(current_state.pawns):
+                print("\t-> Solution found.")
                 return current_state.get_move_sequence()
 
             # Compute all possible moves
@@ -144,9 +147,13 @@ class BFS(GameResolutionInterface):
             )
             has_valid_moves = False
 
+            if not moves:
+                print("\t-> No valid moves for this state.")
+
             # Try all possible moves
             for pawn_color, target_coords in moves:
                 has_valid_moves = True
+                print("\t-> Move", get_color_name(pawn_color), "to", target_coords, f"{'(visited)' if loc in self.visited_positions[target_pawn_color.value] else ''}")
 
                 # Create new pawn positions list
                 new_pawns = list(current_state.pawns)
@@ -166,9 +173,7 @@ class BFS(GameResolutionInterface):
             if not has_valid_moves:
                 explored_states.append(current_state)
 
-        print("Explored states:")
-        for state in explored_states:
-            print(state.get_move_sequence())
+        print("\nNo solution found.")
         return None
 
     def _is_solution(self, pawns: List[Coordinate]) -> bool:

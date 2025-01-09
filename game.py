@@ -24,6 +24,7 @@ class Game:
         self.estimated_move = ""
         self.ai_player = AIPlayer(self.board)
         self.game_over = False
+        self.ai_no_solution_found_msg: bool = False
 
     def create_buttons(self):
         BUTTON_WIDTH = 100
@@ -77,15 +78,21 @@ class Game:
             2. Get the AI move steps from the algorithm
             3. Pass the AI move steps into the auto-move function 
             '''
-            ai_adapter = AiAdapter(self.board, Algorithm.BFS)
+            ai_adapter = AiAdapter(self.board, Algorithm.A_STAR)
             ai_adapter.resolve()
             self.board.ai_move = ai_adapter.get_converted_moves()
+
+            if not ai_adapter.found_solution:
+                self.ai_no_solution_found_msg = True
+                self.draw(self.screen, self.general_font)
+                return
 
             # Call AI player for the auto play (use the move sequence for inputz)
             self.ai_play_turn(self.board.ai_move)
         
         elif button_name == "Restart":
             # print("Game Restarted")
+            self.ai_no_solution_found_msg = False
             self.board.reset_parameters()
             self.board.initialize_board(self.robot_list)
             self.start_time = time.time()
@@ -163,6 +170,12 @@ class Game:
         self.board.draw(screen, self.colors)
         self.draw_buttons(screen, general_font)
         self.draw_timer(screen, general_font)
+        if self.ai_no_solution_found_msg:
+            font = pygame.font.Font(None, 32)
+            label_text = f"No solution found"
+            label_surface = font.render(label_text, True, self.colors["Black"])  # Render text in black
+            label_position = ((self.board.grid_size + 1.8) * self.board.cell_size, 10 * self.board.cell_size)
+            screen.blit(label_surface, label_position)
 
     def display_end_screen(self):
         overlay = pygame.Surface(self.screen.get_size(), pygame.SRCALPHA)  # Create an alpha-enabled surface
@@ -172,8 +185,6 @@ class Game:
         # Determine the message to display
         if self.board.selected_robot.reached_target:
             end_message = "Well done!"
-        elif self.board.ai_error:
-            end_message = "No solution found!"
         else:
             end_message = "Game Over"
 

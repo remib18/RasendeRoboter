@@ -44,6 +44,7 @@ class AiAdapter:
         self.board = board
         self.algorithm = algorithm
         self.moves: Optional[List[Tuple[Color, Coordinate]]] = None
+        self.found_solution: Optional[bool] = None
 
     def resolve(self):
         """
@@ -52,7 +53,13 @@ class AiAdapter:
         """
         state = self._convert_board_to_game_state()
         resolver = self._get_resolver(state)
-        self.moves = resolver.resolve()
+        res = resolver.resolve()
+        self.moves = res
+        if res is None:
+            self.found_solution = False
+        else:
+            self.found_solution = True
+
 
     def _get_resolver(self, state: GameState):
         """
@@ -96,13 +103,13 @@ class AiAdapter:
             dy = new_coord.y - old_coord.y
 
             if dx < 0:
-                direction = "UP"
+                direction = "Left"
             elif dx > 0:
-                direction = "DOWN"
+                direction = "Right"
             elif dy < 0:
-                direction = "LEFT"
+                direction = "Up"
             elif dy > 0:
-                direction = "RIGHT"
+                direction = "Down"
             else:
                 # No movement (rare/not expected)
                 continue

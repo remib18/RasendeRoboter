@@ -82,7 +82,8 @@ class Board:
                     break
 
         # Generate targets
-        target_list = ["Circle", "Square", "Triangle", "Hexagon", "Rain"]
+        # target_list = ["Circle", "Square", "Triangle", "Hexagon", "Rain"]
+        target_list = ["Circle", "Square", "Triangle", "Hexagon"]
         self.target_shape = random.choice(target_list)
         self.target_color = random.choice(robot_colors)
 
@@ -225,7 +226,7 @@ class Board:
     def move_robot(self, direction):
         # Ensure a robot is selected
         if self.selected_robot is None:
-            return False 
+            return False
 
         # Ensure the selected robot not yet reach the target
         if self.selected_robot.reached_target:
