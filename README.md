@@ -1,6 +1,6 @@
 # Rasende Roboter AI solving
 
-This is our solution for solving the *Rasende Roboter* game. This project serves as an introduction to AI game-solving techniques.
+This is our solution for solving the *Rasende Roboter* game. This project serves as an introduction to AI game-solving techniques in our first semester of 2024-2025 at [UTBM](https://www.utbm.fr)
 
 We selected Rasende Roboter for its challenging gameplay mechanics, particularly the strategic movement of multiple pawns required to solve each challenge.
 
